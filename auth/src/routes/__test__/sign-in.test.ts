@@ -1,24 +1,13 @@
 import request from "supertest";
-import { isIterationStatement } from "typescript";
 import { app } from "../../app";
-
-const validEmail = "test@example.com";
-const validPassword = "password";
-const invalidEmail = "jkfslkjsdflkjsdflkj";
-
-const signUp = async () => {
-	return request(app)
-		.post("/api/users/signup")
-		.send({ email: validEmail, password: validPassword })
-		.expect(201);
-};
+import { TestCommon } from "../../test/test-common";
 
 it("returns a 400 with an invalid email", async () => {
 	return request(app)
 		.post("/api/users/signin")
 		.send({
-			email: invalidEmail,
-			password: validPassword,
+			email: TestCommon.VALID_EMAIL,
+			password: TestCommon.VALID_PASSWORD,
 		})
 		.expect(400);
 });
@@ -26,21 +15,24 @@ it("returns a 400 with an invalid email", async () => {
 it("returns a 400 with a missing email", async () => {
 	return request(app)
 		.post("/api/users/signin")
-		.send({ password: validPassword })
+		.send({ password: TestCommon.VALID_PASSWORD })
 		.expect(400);
 });
 
 it("returns a 400 with a missing password", async () => {
 	return request(app)
 		.post("/api/users/signin")
-		.send({ email: validEmail })
+		.send({ email: TestCommon.VALID_EMAIL })
 		.expect(400);
 });
 
 it("fails when an email that does not exist is supplied", async () => {
 	await request(app)
 		.post("/api/users/signin")
-		.send({ email: validEmail, password: validPassword })
+		.send({
+			email: TestCommon.VALID_EMAIL,
+			password: TestCommon.VALID_PASSWORD,
+		})
 		.expect(400);
 });
 
@@ -57,20 +49,23 @@ it("fails when an email that does not exist is supplied", async () => {
 
 describe("after signing up", () => {
 	beforeEach(async () => {
-		await signUp();
+		await TestCommon.signUp();
 	});
 
 	it("fails when an incorrect password is supplied", async () => {
 		return request(app)
 			.post("/api/users/signin")
-			.send({ email: validEmail, password: "asdfgh" })
+			.send({ email: TestCommon.VALID_EMAIL, password: "asdfgh" })
 			.expect(400);
 	});
 
 	it("responds with a cookie when given valid credentials", async () => {
 		const response = await request(app)
 			.post("/api/users/signin")
-			.send({ email: validEmail, password: validPassword })
+			.send({
+				email: TestCommon.VALID_EMAIL,
+				password: TestCommon.VALID_PASSWORD,
+			})
 			.expect(200);
 
 		expect(response.get("Set-Cookie")).toBeDefined();
