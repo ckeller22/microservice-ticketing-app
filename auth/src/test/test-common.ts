@@ -17,4 +17,14 @@ export class TestCommon {
 			.send(TestCommon.VALID_USER)
 			.expect(201);
 	};
+
+	static signUpAndGetCookie = async () => {
+		const response = await request(app)
+			.post("/api/users/signup")
+			.send(TestCommon.VALID_USER)
+			.expect(201);
+
+		const cookie = response.get("Set-Cookie");
+		return cookie;
+	};
 }
