@@ -5,26 +5,26 @@ import { app } from "../app";
 let mongo: any;
 
 beforeAll(async () => {
-	process.env.JWT_KEY = "kjfksjkjldfkljsf";
+  process.env.JWT_KEY = "kjfksjkjldfkljsf";
 
-	mongo = new MongoMemoryServer();
-	await mongo.start();
-	const mongoUri = await mongo.getUri();
+  mongo = new MongoMemoryServer();
+  await mongo.start();
+  const mongoUri = await mongo.getUri();
 
-	await mongoose.connect(mongoUri, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	});
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
 beforeEach(async () => {
-	const collections = await mongoose.connection.db.collections();
-	for (let collection of collections) {
-		await collection.deleteMany({});
-	}
+  const collections = await mongoose.connection.db.collections();
+  for (let collection of collections) {
+    await collection.deleteMany({});
+  }
 });
 
 afterAll(async () => {
-	await mongo.stop();
-	await mongoose.connection.close();
+  await mongo.stop();
+  await mongoose.connection.close();
 });

@@ -7,17 +7,16 @@ import { currentUserRouter } from "./routes/current-user";
 import { signInRouter } from "./routes/sign-in";
 import { signOutRouter } from "./routes/sign-out";
 import { signUpRouter } from "./routes/sign-up";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
+import { errorHandler, NotFoundError } from "@csktickets/common";
 
 const app = express();
 app.set("trust proxy", true);
 app.use(json());
 app.use(
-	cookieSession({
-		signed: false,
-		secure: process.env.NODE_ENV !== "test",
-	})
+  cookieSession({
+    signed: false,
+    secure: process.env.NODE_ENV !== "test",
+  })
 );
 
 app.use(currentUserRouter);
@@ -26,7 +25,7 @@ app.use(signOutRouter);
 app.use(signUpRouter);
 
 app.all("*", async (req, res, next) => {
-	throw new NotFoundError();
+  throw new NotFoundError();
 });
 
 app.use(errorHandler);
