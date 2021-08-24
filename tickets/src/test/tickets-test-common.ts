@@ -9,10 +9,26 @@ export class TestCommon {
   static VALID_TITLE = "Concert Ticket";
   static VALID_PRICE = 10;
 
-  static getCookie = () => {
+  static newTicket = async (userId = "123456") => {
+    // Build ticket and get ticketId
+    const ticket = Ticket.build({
+      title: TestCommon.VALID_TITLE,
+      price: TestCommon.VALID_PRICE,
+      userId: userId,
+    });
+    await ticket.save();
+    const ticketId = ticket.id;
+    return ticketId;
+  };
+
+  static newValidId = () => {
+    return new mongoose.Types.ObjectId().toHexString();
+  };
+
+  static getCookie = (id = TestCommon.newValidId()) => {
     // Build JWT payload
     const payload = {
-      id: "ch23k2454lsa",
+      id: id,
       email: TestCommon.VALID_EMAIL,
     };
     // Create JWT
@@ -25,21 +41,5 @@ export class TestCommon {
     const base64 = Buffer.from(sessionJSON).toString("base64");
     //return a cookie string with data
     return [`express:sess=${base64}`];
-  };
-
-  static newTicket = async () => {
-    // Build ticket and get ticketId
-    const ticket = Ticket.build({
-      title: TestCommon.VALID_TITLE,
-      price: TestCommon.VALID_PRICE,
-      userId: "123456",
-    });
-    await ticket.save();
-    const ticketId = ticket.id;
-    return ticketId;
-  };
-
-  static newValidId = () => {
-    return new mongoose.Types.ObjectId().toHexString();
   };
 }
