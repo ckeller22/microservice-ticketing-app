@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { TestCommon } from "../../test/tickets-test-common";
 import { Ticket } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("returns a 404 if the provided id does not exist", async () => {
   await request(app)
@@ -95,6 +96,21 @@ describe("if a ticket exists", () => {
       const ticket = await Ticket.findById(ticketId);
       expect(ticket!.price).toEqual(newPrice);
       expect(ticket!.title).toEqual(newTitle);
+    });
+
+    it("publishes an event", async () => {
+      const newTitle = "This should change";
+      const newPrice = 10000;
+      await request(app)
+        .put(`/api/tickets/${ticketId}`)
+        .set("Cookie", cookie)
+        .send({
+          title: newTitle,
+          price: newPrice,
+        })
+        .expect(200);
+
+      expect(natsWrapper.client.publish).toHaveBeenCalled();
     });
   });
 });
