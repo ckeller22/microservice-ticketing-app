@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { OrderStatus } from "@csktickets/common";
 import { TicketDoc } from "./ticket";
+import { OrderStatus } from "@csktickets/common";
 
 export { OrderStatus };
 
@@ -39,7 +39,7 @@ const orderSchema = new mongoose.Schema(
     },
     ticket: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ticket",
+      ref: "Ticket",
     },
   },
   {

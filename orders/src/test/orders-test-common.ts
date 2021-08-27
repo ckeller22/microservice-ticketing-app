@@ -2,6 +2,7 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { app } from "../app";
 import { Ticket } from "../models/ticket";
+import { Order, OrderStatus } from "../models/order";
 import jwt from "jsonwebtoken";
 
 export class TestCommon {
@@ -30,4 +31,23 @@ export class TestCommon {
     //return a cookie string with data
     return [`express:sess=${base64}`];
   };
+
+  static newTicket = async () => {
+    const ticket = Ticket.build({
+      title: TestCommon.VALID_TITLE,
+      price: TestCommon.VALID_PRICE,
+    });
+    await ticket.save();
+
+    return ticket;
+  };
+
+  // static newOrder = async (userId = "123456") => {
+  //   const order = Order.build({
+  //     ticket,
+  //     userId: userId,
+  //     status: OrderStatus.Created,
+  //     expiresAt: new Date(),
+  //   });
+  // };
 }
