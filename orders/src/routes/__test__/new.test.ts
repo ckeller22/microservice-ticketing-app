@@ -4,6 +4,7 @@ import { app } from "../../app";
 import { TestCommon } from "../../test/orders-test-common";
 import { Order, OrderStatus } from "../../models/order";
 import { Ticket, TicketDoc } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app).post("/api/orders").send({});
@@ -66,4 +67,18 @@ it("successfully reserves a ticket", async () => {
   expect(String(order!.ticket)).toEqual(String(ticket.id));
 });
 
-it.todo("emits and order created event");
+it("emits and order created event", async () => {
+  const ticket = await TestCommon.newTicket();
+
+  const response = await request(app)
+    .post("/api/orders")
+    .set("Cookie", TestCommon.getCookie())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  const order = await Order.findById(response.body.id);
+  expect(order!.status).toEqual(OrderStatus.Created);
+  expect(String(order!.ticket)).toEqual(String(ticket.id));
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
