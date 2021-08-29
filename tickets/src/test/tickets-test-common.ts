@@ -17,8 +17,7 @@ export class TestCommon {
       userId: userId,
     });
     await ticket.save();
-    const ticketId = ticket.id;
-    return ticketId;
+    return ticket;
   };
 
   static newValidId = () => {

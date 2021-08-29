@@ -12,10 +12,10 @@ it("returns a 404 if the ticket is not found", async () => {
 });
 
 it("returns the ticket if the ticket is found", async () => {
-  const ticketId = await TestCommon.newTicket();
+  const ticket = await TestCommon.newTicket();
 
   const ticketResponse = await request(app)
-    .get(`/api/tickets/${ticketId}`)
+    .get(`/api/tickets/${ticket.id}`)
     .send()
     .expect(200);
 
