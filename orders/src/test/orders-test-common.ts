@@ -36,6 +36,7 @@ export class TestCommon {
     const ticket = Ticket.build({
       title: TestCommon.VALID_TITLE,
       price: TestCommon.VALID_PRICE,
+      id: TestCommon.newValidId(),
     });
     await ticket.save();
 
