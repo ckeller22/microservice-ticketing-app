@@ -99,6 +99,22 @@ describe("if a ticket exists", () => {
       expect(ticketCheck!.title).toEqual(newTitle);
     });
 
+    it("rejects updates if the ticket is reserved", async () => {
+      ticket.set({ orderId: TestCommon.newValidId() });
+      await ticket.save();
+
+      const newTitle = "This should change";
+      const newPrice = 10000;
+      await request(app)
+        .put(`/api/tickets/${ticket.id}`)
+        .set("Cookie", cookie)
+        .send({
+          title: newTitle,
+          price: newPrice,
+        })
+        .expect(400);
+    });
+
     it("publishes an event", async () => {
       const newTitle = "This should change";
       const newPrice = 10000;
