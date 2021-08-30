@@ -1,4 +1,5 @@
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 
 const start = async () => {
   //#region environment variables
@@ -34,6 +35,7 @@ const start = async () => {
       natsWrapper.client.close();
     });
 
+    new OrderCreatedListener(natsWrapper.client).listen();
     //#endregion
   } catch (err) {
     console.log(err);
