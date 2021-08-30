@@ -14,6 +14,8 @@ import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
+// TODO: Restore expiration time from 1 minute to 15 before production
+// TODO: Refactor to env var instead, maybe production check
 const EXPIRATION_WINDOW_SECONDS = 1 * 60;
 
 router.post(
