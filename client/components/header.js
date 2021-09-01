@@ -19,7 +19,7 @@ const Header = ({ currentUser }) => {
 
   return (
     <nav className="navbar navbar-light bg-light">
-      <div className="container-fluid">
+      <div className="container">
         <Link href="/">
           <a className="navbar-brand">TixGit</a>
         </Link>
