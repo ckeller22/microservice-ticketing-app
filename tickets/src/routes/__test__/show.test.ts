@@ -6,7 +6,7 @@ import { TestCommon } from "../../test/tickets-test-common";
 
 it("returns a 404 if the ticket is not found", async () => {
   await request(app)
-    .get(`api/tickets/${TestCommon.newValidId}`)
+    .get(`/api/tickets/${TestCommon.newValidId()}`)
     .send()
     .expect(404);
 });
