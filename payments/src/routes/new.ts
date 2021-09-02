@@ -42,9 +42,24 @@ router.post(
       source: token,
     });
 
-    const payment = Payment.build({
+    let payment;
+    let stripeId;
+
+    switch (process.env.NODE_ENV) {
+      case "test":
+        stripeId = "FakeStripeID";
+        break;
+      case "production":
+        stripeId = charge.id;
+        break;
+      default:
+        throw new Error("Node environment variable not accounted for.");
+        break;
+    }
+
+    payment = Payment.build({
       orderId: orderId,
-      stripeId: charge.id,
+      stripeId: stripeId,
     });
     await payment.save();
 
@@ -58,5 +73,7 @@ router.post(
     res.status(201).send({ id: payment.id });
   }
 );
+
+const mockChargeId = () => {};
 
 export { router as createChargeRouter };

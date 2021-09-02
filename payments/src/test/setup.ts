@@ -8,6 +8,7 @@ let mongo: any;
 
 beforeAll(async () => {
   process.env.JWT_KEY = "kjfksjkjldfkljsf";
+  process.env.STRIPE_KEY = "123abc";
 
   mongo = new MongoMemoryServer();
   await mongo.start();
