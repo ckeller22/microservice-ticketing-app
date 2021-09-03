@@ -22,3 +22,4 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - run: az aks get-credentials --resource-group TixGit --name ticketing
       - run: kubectl config use-context ticketing
+      - run: kubectl rollout restart deployment auth-depl
