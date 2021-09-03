@@ -16,4 +16,4 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - run: az aks get-credentials --resource-group TixGit --name ticketing
       - run: kubectl config use-context ticketing
-      - run: kubectl apply -f infra/k8s
+      - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
