@@ -1,0 +1,26 @@
+name: deploy-orders
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - orders/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: cd orders && docker build -t chriskeller222/orders .
+      - run: docker push chriskeller222/orders
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - run: az aks get-credentials --resource-group TixGit --name ticketing
+      - run: kubectl config use-context ticketing
+      - run: kubectl rollout restart deployment orders-depl
