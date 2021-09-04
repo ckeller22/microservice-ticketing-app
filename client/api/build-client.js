@@ -5,7 +5,7 @@ const buildClient = ({ req }) => {
     // On server
 
     return axios.create({
-      baseURL: "http://www.tixgit.website/",
+      baseURL: "http://www.tixgit.website",
       headers: req.headers,
     });
   } else {
