@@ -37,13 +37,15 @@ const OrderShow = ({ order, currentUser }) => {
   return (
     <div>
       Time left to pay: {timeLeft} seconds
-      <StripeCheckout
-        token={({ id }) => doRequest({ token: id })}
-        stripeKey={process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY}
-        amount={order.ticket.price * 100}
-        email={currentUser.email}
-      />
       {errors}
+      <div>
+        <StripeCheckout
+          token={({ id }) => doRequest({ token: id })}
+          stripeKey={process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY}
+          amount={order.ticket.price * 100}
+          email={currentUser.email}
+        />
+      </div>
     </div>
   );
 };
