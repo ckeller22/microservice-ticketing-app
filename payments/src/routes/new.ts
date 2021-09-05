@@ -49,11 +49,8 @@ router.post(
       case "test":
         stripeId = "FakeStripeID";
         break;
-      case "production":
-        stripeId = charge.id;
-        break;
       default:
-        throw new Error("Node environment variable not accounted for.");
+        stripeId = charge.id;
         break;
     }
 
