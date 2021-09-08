@@ -21,6 +21,8 @@ build:
       context: client
       docker:
         dockerfile: Dockerfile
+        buildArgs:
+          DEV_MODE: true
       sync:
         manual:
           - src: "**/*.js"
