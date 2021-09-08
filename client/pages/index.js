@@ -1,33 +1,42 @@
 import Link from "next/link";
 
 const LandingPage = ({ currentUser, tickets }) => {
-  const ticketList = tickets.map((ticket) => {
+  const ticketCards = tickets.map((ticket) => {
     return (
-      <tr key={ticket.id}>
-        <td>{ticket.title}</td>
-        <td>{ticket.price}</td>
-        <td>
+      <div className="col">
+        <div className="card">
           <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-            <a>View</a>
+            <a>
+              <img
+                src="/images/ticket.png"
+                className="card-img-top"
+                alt="ticket image"
+              />
+            </a>
           </Link>
-        </td>
-      </tr>
+          <div className="card-body">
+            <h5 className="card-title">
+              {ticket.title} - ${ticket.price}
+            </h5>
+            <p className="card-text">
+              In nisi nulla aliqua tempor cillum veniam aliquip sint ea
+              excepteur magna eu.
+            </p>
+            <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+              <a className="btn btn-primary">View</a>
+            </Link>
+          </div>
+        </div>
+      </div>
     );
   });
 
   return (
     <div>
       <h1>Tickets</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>{ticketList}</tbody>
-      </table>
+      <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
+        {ticketCards}
+      </div>
     </div>
   );
 };
